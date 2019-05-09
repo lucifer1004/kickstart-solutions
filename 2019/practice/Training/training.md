@@ -4,7 +4,7 @@
 
 |Language|Test set 1|Test set 2|
 |:-:|:-:|:-:|
-| [Python](training.py) | PASS | <p style="text-align: center; color: red;">TLE</p> |
+| [Python](training.py) | PASS | **TLE** |
 | [GoLang](training.go) | PASS | PASS |
 
 ## About the problem
