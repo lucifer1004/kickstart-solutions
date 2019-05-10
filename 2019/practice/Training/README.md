@@ -2,10 +2,11 @@
 
 ## Solutions
 
-|Language|Test set 1|Test set 2|
-|:-:|:-:|:-:|
-| [Python](training.py) | PASS | **TLE** |
-| [GoLang](training.go) | PASS | PASS |
+|          Language          | Test set 1 | Test set 2 |
+|:--------------------------:|:----------:|:----------:|
+|  [Python3](training.py3)   |    PASS    |  **TLE**   |
+| [Pypy2](training.pypy2.py) |    PASS    |  **TLE**   |
+|   [GoLang](training.go)    |    PASS    |    PASS    |
 
 ## About the problem
 
