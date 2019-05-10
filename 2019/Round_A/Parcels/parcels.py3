@@ -1,5 +1,8 @@
 import numpy as np
 
+# Constants
+dire = [[0, -1], [-1, 0], [0, 1], [1, 0]]
+
 
 def manhattan(r1, c1, r2, c2):
     """
@@ -24,40 +27,59 @@ for i in range(t):
     [r, c] = [int(s) for s in line.split(' ')]
 
     # Read the grid
-    map = []
+    grid = []
     for j in range(r):
         line = input()
-        map_row = [int(s) for s in line]
-        map.append(map_row)
+        grid_row = [int(s) for s in line]
+        grid.append(grid_row)
 
-    map = np.array(map)
-    original = np.zeros(4 * r * c).reshape(r * c, 4)
+    grid = np.array(grid)
+    dist = np.zeros((r, c))
+    visited = np.zeros((r, c))
+    queue = []
 
+    # BFS to get current delivery distance of every square
     for j in range(r):
         for k in range(c):
-            original[j * c + k] = np.array(
-                [j, k, map[j, k], 0 if map[j, k] == 1 else -1])
+            if grid[j, k] == 1:
+                dist[j, k] = 0
+                visited[j, k] = 1
+                queue.append([j, k, 0])
 
-    for j in range(r * c):
-        if original[j, 2] == 1:
-            for k in range(r * c):
-                dist = manhattan(
-                    original[j, 0], original[j, 1], original[k, 0], original[k, 1])
-                if dist < original[k, 3] or original[k, 3] < 0:
-                    original[k, 3] = dist
+    head = 0
+    tail = len(queue)
 
-    ans = np.max(original[:, 3])
+    while head < tail:
+        head_r = queue[head][0]
+        head_c = queue[head][1]
+        dist[head_r, head_c] = queue[head][2]
+        for j in range(len(dire)):
+            target_r = head_r + dire[j][0]
+            target_c = head_c + dire[j][1]
+            if 0 <= target_r < r and 0 <= target_c < c:
+                if visited[target_r, target_c] == 0:
+                    queue.append([target_r, target_c, queue[head][2] + 1])
+                    visited[target_r, target_c] = 1
+                    dist[head_r, head_c] = queue[head][2]
+                    tail += 1
+        head += 1
+
+    ans = np.max(dist)
 
     if ans > 0:
         for j in range(r * c):
-            if original[j, 2] == 0:
-                solution = original.copy()
+            if queue[j][2] > 0:
+                new_office_r = queue[j][0]
+                new_office_c = queue[j][1]
+                solution = dist.copy()
                 for k in range(r * c):
-                    dist = manhattan(
-                        original[j, 0], original[j, 1], original[k, 0], original[k, 1])
-                    if dist < solution[k, 3]:
-                        solution[k, 3] = dist
-                min_delivery = np.max(solution[:, 3])
+                    curr_r = queue[k][0]
+                    curr_c = queue[k][1]
+                    new_dist = manhattan(
+                        new_office_r, new_office_c, curr_r, curr_c)
+                    if new_dist < solution[curr_r, curr_c]:
+                        solution[curr_r, curr_c] = new_dist
+                min_delivery = np.max(solution)
                 if min_delivery < ans:
                     ans = min_delivery
 
