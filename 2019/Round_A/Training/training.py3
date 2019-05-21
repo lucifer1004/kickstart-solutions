@@ -1,4 +1,3 @@
-import functools
 import numpy as np
 
 # Read T (Number of test cases)
