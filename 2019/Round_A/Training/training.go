@@ -43,12 +43,12 @@ func main() {
 			skills = append(skills, skill)
 		}
 
-		// Sort skill in descending order
+		// Sort skill in ascending order
 		sort.Ints(skills)
 
 		skillSums := []int{0}
 
-		// Calculate accumulative sum
+		// Calculate accumulative sum from the tail
 		for j := 0; j < n; j++ {
 			skillSums = append(skillSums, skillSums[len(skillSums)-1]+skills[n-j-1])
 		}
