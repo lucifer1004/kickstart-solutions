@@ -51,7 +51,6 @@ func main() {
 			}
 			best = append(best, currentBest)
 			searchLimit = bestWatershed
-			// fmt.Println("Redip:", j, bestWatershed, currentBest)
 		}
 
 		// Print the answer
