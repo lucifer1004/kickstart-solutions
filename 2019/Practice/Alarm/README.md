@@ -3,7 +3,7 @@
 ## Solutions
 
 |      Language      | Test set 1 | Test set 2 |
-|:------------------:|:----------:|:----------:|
+| :----------------: | :--------: | :--------: |
 | [GoLang](alarm.go) |    PASS    |    PASS    |
 
 ## About the problem
