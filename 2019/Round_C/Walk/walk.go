@@ -53,18 +53,15 @@ func main() {
 			ins := instructions[j]
 			switch ins {
 			case "W":
-				left = 1
 				right = sc - 1
 			case "E":
-				left = 1
 				right = c - sc
 			case "N":
-				left = 1
 				right = sr - 1
 			case "S":
-				left = 1
 				right = r - sr
 			}
+			left = 1
 			for left < right {
 				mid = (left + right) / 2
 				if visited[Point{x: sr + mid*directions[ins].x, y: sc + mid*directions[ins].y}] {
