@@ -1,45 +1,49 @@
 package rangetree1d
 
-type rangeTree struct {
+// RangeTree ...
+type RangeTree struct {
 	val          int
-	ltree, rtree *rangeTree
+	ltree, rtree *RangeTree
 }
 
-func build(vals []int) rangeTree {
+// Build ...
+func Build(vals []int) RangeTree {
 	if len(vals) == 0 {
 		panic("Cannot initialize an empty range tree")
 	}
-	tree := rangeTree{val: vals[0]}
+	tree := RangeTree{val: vals[0]}
 	for i := 1; i < len(vals); i++ {
-		insert(&tree, vals[i])
+		Insert(&tree, vals[i])
 	}
 	return tree
 }
 
-func insert(tree *rangeTree, val int) {
+// Insert ...
+func Insert(tree *RangeTree, val int) {
 	if val == tree.val {
 		return
 	}
 	if val < tree.val {
 		if tree.ltree != nil {
-			insert(tree.ltree, val)
+			Insert(tree.ltree, val)
 		} else {
-			tree.ltree = &rangeTree{
+			tree.ltree = &RangeTree{
 				val: val,
 			}
 		}
 	} else {
 		if tree.rtree != nil {
-			insert(tree.rtree, val)
+			Insert(tree.rtree, val)
 		} else {
-			tree.rtree = &rangeTree{
+			tree.rtree = &RangeTree{
 				val: val,
 			}
 		}
 	}
 }
 
-func delete(tree *rangeTree, val int) *rangeTree {
+// Delete ...
+func Delete(tree *RangeTree, val int) *RangeTree {
 	if val == tree.val {
 		if tree.ltree == nil {
 			return tree.rtree
@@ -56,71 +60,77 @@ func delete(tree *rangeTree, val int) *rangeTree {
 	}
 	if val < tree.val {
 		if tree.ltree != nil {
-			tree.ltree = delete(tree.ltree, val)
+			tree.ltree = Delete(tree.ltree, val)
 		}
 	} else {
 		if tree.rtree != nil {
-			tree.rtree = delete(tree.rtree, val)
+			tree.rtree = Delete(tree.rtree, val)
 		}
 	}
 	return tree
 }
 
-func traverse(tree rangeTree) []int {
-	return query(tree, -1<<31, 1<<31-1)
+// Traverse ...
+func Traverse(tree RangeTree) []int {
+	return Query(tree, -1<<31, 1<<31-1)
 }
 
-func min(tree rangeTree) int {
+// Min ...
+func Min(tree RangeTree) int {
 	if tree.ltree != nil {
-		return min(*tree.ltree)
+		return Min(*tree.ltree)
 	}
 	return tree.val
 }
 
-func max(tree rangeTree) int {
+// Max ...
+func Max(tree RangeTree) int {
 	if tree.rtree != nil {
-		return max(*tree.rtree)
+		return Max(*tree.rtree)
 	}
 	return tree.val
 }
 
-func search(tree rangeTree, val int) bool {
+// Search ...
+func Search(tree RangeTree, val int) bool {
 	if tree.val > val && tree.ltree != nil {
-		return search(*tree.ltree, val)
+		return Search(*tree.ltree, val)
 	}
 	if tree.val == val {
 		return true
 	}
 	if tree.val < val && tree.rtree != nil {
-		return search(*tree.rtree, val)
+		return Search(*tree.rtree, val)
 	}
 	return false
 }
 
-func query(tree rangeTree, l, r int) []int {
+// Query ...
+func Query(tree RangeTree, l, r int) []int {
 	res := []int{}
 	if tree.val > l && tree.ltree != nil {
-		res = append(res, query(*tree.ltree, l, r)...)
+		res = append(res, Query(*tree.ltree, l, r)...)
 	}
 	if tree.val >= l && tree.val <= r {
 		res = append(res, tree.val)
 	}
 	if tree.val < r && tree.rtree != nil {
-		res = append(res, query(*tree.rtree, l, r)...)
+		res = append(res, Query(*tree.rtree, l, r)...)
 	}
 	return res
 }
 
-func reverseQuery(tree rangeTree, l, r int) []int {
+// ReverseQuery ...
+func ReverseQuery(tree RangeTree, l, r int) []int {
 	res := []int{}
 	if tree.val < r && tree.rtree != nil {
-		res = append(res, reverseQuery(*tree.rtree, l, r)...)
+		res = append(res, ReverseQuery(*tree.rtree, l, r)...)
 	}
 	if tree.val >= l && tree.val <= r {
 		res = append(res, tree.val)
 	}
 	if tree.val > l && tree.ltree != nil {
-		res = append(res, reverseQuery(*tree.ltree, l, r)...)
+		res = append(res, ReverseQuery(*tree.ltree, l, r)...)
 	}
 	return res
 }
